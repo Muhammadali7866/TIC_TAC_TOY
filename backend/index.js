@@ -1,47 +1,43 @@
 const express = require("express");
-require("./database/prisma")
+const Router = require("./routes");
 const app = express();
 const path = require("path");
-// const PORT = process.env.PORT||3000;
-const PORT = 3000;
+const cookieSession = require("cookie-session")
+const session = require('express-session');
+const passport = require("passport")
+
+require("./database/prisma")
 require("dotenv").config()
+require("./auth");
+
+
+
+app.use(session({ secret: 'secretKey', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.get('/auth/google',
+ passport.authenticate('google', { scope: ['profile', 'email'] })
+ );
+app.get('/auth/google/callback',
+ passport.authenticate('google', { failureRedirec: '/',successRedirect:"/profile" }),
+ (req, res) => {
+ res.redirect('/');
+ });
+
+ app.get("/profile",(req,res)=>{
+  return res.send("ok")
+ })
 
 
 // import user router
-const Router = require("./routes");
-
-
-app.use("/api/user/",Router.users)
-
-app.listen(PORT, () => {
-  console.log(`server is running on ${PORT}`);
-});
-
-
+// app.use("/",Router.users)
 // connect backend with public file 
 app.use(express.static(path.join(__dirname,"./public")))
 
-
-// authentiation process
-var GoogleStrategy = require("passport-google-oauth20").Strategy;
-const passport = require("passport")
-
-passport.use(new GoogleStrategy({
-  clientID:process.env.CLIENT_ID,
-  clientSecret:process.env.CLIENT_SECRET,
-  callbackURL:process.env.CALLBACK_URL
-},(accessToken,refreshToken,profile,cb)=>{
-  console.log("authenticate user");
-  cb(null,{accessToken,profile})
-}));
-
-passport.serializeUser((user, done) => {
-  done(null, user);
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`server is running on ${PORT}`);
 });
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-console.log(process.env.CLIENT_ID);
-console.log(process.env.CLIENT_SECRET);
-console.log(process.env.CALLBACK_URL);

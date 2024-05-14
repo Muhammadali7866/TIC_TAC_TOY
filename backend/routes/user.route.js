@@ -7,8 +7,14 @@ const userController = require("../controllers/user.controllers");
 // })
 router.get("/auth/google", userController.registerUser);
 router.get("/auth/callback", userController.loginUser);
-router.get("/protected", () => {
-  console.log("sucessfully there");
+router.get('auth/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+router.get('/profile', (req, res) => {
+  console.log("finally here");
+  res.send(req.user);
 });
 
 module.exports = router;
