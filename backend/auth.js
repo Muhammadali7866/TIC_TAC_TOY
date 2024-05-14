@@ -1,4 +1,5 @@
 const passport = require("passport");
+const prisma = require("./database/prisma");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 passport.use(
   new GoogleStrategy(
@@ -7,9 +8,21 @@ passport.use(
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: process.env.CALLBACK_URL,
     },
-    (accessToken, refreshToken, profile, done) => {
+    async(accessToken, refreshToken, profile, done) => {
           // fetch user
-          
+          let user = await prisma.user.upsert({
+            where:{
+              googleId:profile.id
+            },
+            update:{
+
+            },
+            create:{
+              googleId:profile.id,
+              email:profile.emails[0].value,
+              
+            }
+          })
       return done(null, profile);
     }
   )
