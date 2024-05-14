@@ -28,6 +28,7 @@ app.get('/auth/google/callback',
  });
 
  app.get("/profile",(req,res)=>{
+  console.log(req.user);
   return res.send("ok")
  })
 
