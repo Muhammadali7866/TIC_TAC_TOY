@@ -1,5 +1,6 @@
 const express = require("express");
 const Router = require("./routes");
+const prisma = require("./database/prisma");
 const app = express();
 const path = require("path");
 const cookieSession = require("cookie-session")
@@ -29,7 +30,12 @@ app.get('/auth/google/callback',
 
  app.get("/profile",(req,res)=>{
   console.log(req.user);
-  return res.send("ok")
+  return res.send("Login succesfully")
+ })
+
+ app.get("/allUsers",async(req,res)=>{
+  let users = await prisma.user.findMany();
+  console.log({users});
  })
 
 

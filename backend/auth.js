@@ -10,23 +10,41 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       // fetch user
-      await prisma.user.upsert({
+      let user = await prisma.user.upsert({
         where: {
           googleId: profile.id,
         },
-        update: {
-          googleId: profile.id,
-          email: profile.emails[0].value,
-          name: profile.displayName,
-          profilePicture: profile.photos[0].value,
-        },
         create: {
           googleId: profile.id,
-          email: profile.emails[0].value,
           name: profile.displayName,
+          email: profile.emails[0].value,
+          profilePicture: profile.photos[0].value,
+        },
+        update: {
+          googleId: profile.id,
+          name: profile.displayName,
+          email: profile.emails[0].value,
           profilePicture: profile.photos[0].value,
         },
       });
+      if (user) {
+        await prisma.auth.upsert({
+          where: {
+            userId: user.id,
+          },
+          create: {
+            userId:user.id,
+            email:user.email,
+            verificationToken :accessToken,
+            verificationTokenExpiration: Date.now() +15*60*1000
+          },
+          update: {
+            verificationToken :accessToken,
+            verificationTokenExpiration:Date.now() +15*60*1000
+          },
+        });
+      }
+
       return done(null, profile);
     }
   )
