@@ -10,13 +10,29 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // url      = "postgresql://postgres:admin12@localhost:5432/mydb?schema=public"
+  // url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:admin12@localhost:5432/mydb?schema=public"
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  email String? @unique
+model user {
+  id             Int     @id @default(autoincrement())
+  email          String? @unique
   profilePicture String?
+  googleId      String? @unique
+  name        String? 
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  auth      auth?
 }
 
+model auth {
+  id                          Int       @id @default(autoincrement())
+  user                        user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                      Int       @unique
+  email                       String?
+  verificationToken           String?   @unique
+  verificationTokenExpiration BigInt?
+  createdAt                   DateTime? @default(now())
+  updatedAt                   DateTime? @updatedAt
+}
