@@ -1,4 +1,8 @@
 * {
-  background-color:rgb(15, 23, 42); /* or any other color or image */
+  background-color:rgb(15, 23, 42);
   height: 100vh; /* Make sure it covers the full viewport height */
 }
+/* .header{
+    background-color:rgb(15, 23, 42);
+
+} */
