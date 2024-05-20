@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Main from './components/main';
 import Navbar from './components/navbar';
+import Board from './components/board';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Navbar/>
-    <Main />
+    <Board/>
+    {/* <Main /> */}
+    
     {/* <App /> */}
   </React.StrictMode>
 );
