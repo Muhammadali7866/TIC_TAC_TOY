@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import circleIcon from "../assets/circle.png";
 import crossIcon from "../assets/cross.png";
+import Startgame from "./startgame";
 
 const winningCombination = [
   [0, 1, 2],
@@ -58,6 +59,9 @@ function Board() {
   useEffect(() => {}, []);
 
   return (
+    <>
+    <div className="h-screen bg-custom-dark">
+
     <div className="board">
       <div className="row1 mt-5">
         <div className="boxex" onClick={() => handleBoxClick(0)}>
@@ -94,6 +98,9 @@ function Board() {
       </div>
       <div>{winner}</div>
     </div>
+    </div>
+    <Startgame/>
+    </>
   );
 }
 
