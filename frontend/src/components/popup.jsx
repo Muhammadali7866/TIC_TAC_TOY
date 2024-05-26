@@ -2,8 +2,14 @@
 import React from "react";
 import { X } from "lucide-react";
 import { Link } from 'react-router-dom';
-
+import {io} from "socket.io-client";
+const socket = io('http://localhost:3000');
 const Popup = ({onClose}) => {
+ 
+  const createRoom =()=>{
+    socket.emit("createRoom")
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center items-center ">
@@ -12,7 +18,7 @@ const Popup = ({onClose}) => {
             <X onClick={onClose} size={30} />
           </button>
           <div className=" bg-blue-800 rounded-lg px-20 py-10 flex flex-col gap-3 items-center">
-            <div className="font-medium text-lg"><Link to="/contact">Start Game</Link></div>
+            <div className="font-medium text-lg"><Link to="/contact" onClick={createRoom}>Start Game</Link></div>
             <div className="font-medium text-lg">OR</div>
             <input className="w-full px-1 py-1 text-black rounded-xl" placeholder="Enter your code" type="text" />
             <button className="font-medium text-lg">Enter code</button>
