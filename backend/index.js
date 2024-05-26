@@ -17,7 +17,7 @@ const io = require("socket.io")(server, {
 });
 
 // Example room management (to be handled as per your application needs)
-const rooms = {};
+let rooms = {};
 
 // Socket.io logic
 io.on("connection", (socket) => {
@@ -30,6 +30,15 @@ io.on("connection", (socket) => {
     console.log("Room created:", roomCode);
     socket.emit("roomCreated", roomCode); // Notify client about room creation
   });
+  socket.on("inputCode",(inputCode)=>{
+    const room =io.sockets.adapter.rooms.get(inputCode);
+    console.log({room});
+    if(room && room.size<2){
+      socket.join(inputCode);
+      console.log(`user ${socket.id} has joined the room`);
+      socket.emit("roomJoinedSuccessfully",room.size)
+    }
+  })
 
   socket.on("disconnect", () => {
     console.log("user is disconnected");
