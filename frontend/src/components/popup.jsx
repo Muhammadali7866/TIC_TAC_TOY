@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import UserContext from "../context/userContext";
+import { useContext } from "react";
+
 
 const socket = io("http://localhost:3001");
 
@@ -9,6 +12,8 @@ const Popup = ({ onClose }) => {
   const [roomCode, setRoomCode] = useState(""); // State to hold room code
   const [inputCode, setInputCode] = useState("");
   const navigate = useNavigate(); // React Router hook for navigation
+
+  const {setRoomSize} = useContext(UserContext);
 
   // Function to handle room creation
   const handleStartGame = () => {
@@ -19,6 +24,8 @@ const Popup = ({ onClose }) => {
   // Function to handle enter code button click
   const handleEnterCode = () => {
     socket.emit("inputCode", inputCode);
+    localStorage.setItem("key","value")
+    
     
   };
 
@@ -31,6 +38,9 @@ useEffect(() => {
 
   // Listen for successful room join
   socket.on("roomJoinedSuccessfully", (size) => {
+    console.log("i am here recently you upda");
+    setRoomSize(size)
+    localStorage.setItem("roomSize",size)
     navigate("/contact", { state: { roomSize: size} }); // Navigate to contact page with the entered code
   });
 
@@ -50,7 +60,7 @@ useEffect(() => {
         </button>
         <div className="bg-blue-800 rounded-lg px-20 py-10 flex flex-col gap-3 items-center">
           <div className="font-medium text-lg">
-            <button onClick={handleStartGame}>Start Game</button>
+            <button onClick={handleStartGame}>Start Game </button>
           </div>
           <div className="font-medium text-lg">OR</div>
           <input

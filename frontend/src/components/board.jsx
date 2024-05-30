@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import circleIcon from "../assets/circle.png";
 import crossIcon from "../assets/cross.png";
 import Startgame from "./startgame";
 import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
+import UserContext from "../context/userContext";
 
 const socket = io("http://localhost:3001");
 
@@ -20,15 +21,6 @@ const winningCombination = [
 
 function Board() {
   const [startGamePopup, setStartGamePopup] = useState(true);
-
-  const location = useLocation();
-  useEffect(()=>{
-    const roomSize = location.state?.roomSize || 0;
-    if(roomSize ===2){
-      console.log({roomSize});
-      setStartGamePopup(false)
-    }
-  },[])
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
@@ -70,6 +62,12 @@ function Board() {
     return null;
   };
 
+  const onClose = () => {
+    let roomSize = localStorage.getItem("roomSize");
+    if (roomSize === "2") {
+      setStartGamePopup(false);
+    }
+  };
 
   return (
     <>
@@ -111,7 +109,7 @@ function Board() {
           <div>{winner}</div>
         </div>
       </div>
-      {startGamePopup && <Startgame />}
+      {startGamePopup && <Startgame onClose={onClose} />}
     </>
   );
 }
