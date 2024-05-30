@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 import UserContext from "../context/userContext";
 import { useContext } from "react";
 
-
 const socket = io("http://localhost:3001");
 
 const Popup = ({ onClose }) => {
@@ -13,44 +12,28 @@ const Popup = ({ onClose }) => {
   const [inputCode, setInputCode] = useState("");
   const navigate = useNavigate(); // React Router hook for navigation
 
-  const {setRoomSize} = useContext(UserContext);
+  const { setRoomSize } = useContext(UserContext);
 
   // Function to handle room creation
   const handleStartGame = () => {
     console.log("hello");
     socket.emit("createRoom"); // Emit createRoom event to the server
+    socket.on("roomCreated", (roomCode) => {
+      navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
+    });
   };
 
   // Function to handle enter code button click
   const handleEnterCode = () => {
+    console.log("in function");
     socket.emit("inputCode", inputCode);
-    localStorage.setItem("key","value")
-    
-    
+    socket.on("roomJoinedSuccessfully", (size) => {
+      console.log("from join room func");
+      if (size === 2) {
+        navigate("/contact", { state: { roomSize: size} });
+      }
+    });
   };
-
- // Effect to listen for roomCreated event from server
-useEffect(() => {
-  socket.on("roomCreated", (roomCode) => {
-    setRoomCode(roomCode); // Update roomCode state with received roomCode
-    navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
-  });
-
-  // Listen for successful room join
-  socket.on("roomJoinedSuccessfully", (size) => {
-    console.log("i am here recently you upda");
-    setRoomSize(size)
-    localStorage.setItem("roomSize",size)
-    navigate("/contact", { state: { roomSize: size} }); // Navigate to contact page with the entered code
-  });
-
-  // Cleanup function to remove event listeners when component unmounts
-  return () => {
-    socket.off("roomCreated");
-    socket.off("roomJoinedSuccessfully");
-  };
-}, [navigate, inputCode]); // Include navigate and inputCode in dependency array
-
 
   return (
     <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
