@@ -13,8 +13,9 @@ function Startgame({ onClose }) {
   // Function to handle redirection
   const redirectToMain = () => {
     let roomSize = localStorage.getItem("roomSize");
+    console.log({ roomSize });
     if (roomSize === "2") {
-      navigate("/contact", { state: { roomSize:2 } }); // Navigate to contact page with the entered code
+      navigate("/contact", { state: { roomSize: 2 } }); // Navigate to contact page with the entered code
     }
   };
 

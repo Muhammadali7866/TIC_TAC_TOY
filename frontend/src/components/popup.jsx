@@ -28,7 +28,8 @@ const Popup = ({ onClose }) => {
     console.log("in function");
     socket.emit("inputCode", inputCode);
     socket.on("roomJoinedSuccessfully", (size) => {
-      console.log("from join room func");
+      console.log("from join room func",size);
+      localStorage.setItem("roomSize",size)
       if (size === 2) {
         navigate("/contact", { state: { roomSize: size} });
       }
