@@ -7,8 +7,12 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: process.env.CALLBACK_URL,
+      passReqToCallback: true,
+
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (request, accessToken, refreshToken, profile, done) => {
+      console.log({accessToken});
+      console.log({refreshToken});
       // fetch user
       let user = await prisma.user.upsert({
         where: {

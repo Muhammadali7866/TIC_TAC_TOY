@@ -11,19 +11,19 @@ import Startgame from "./components/startgame";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <UserContextProvider>
+    <UserContextProvider>
+      <Router>
+        <div>
+          <Navbar />
           <Routes>
             {/* <Route path="/" element={<Board />} /> */}
             <Route path="/about" element={<Content />} />
             <Route path="/contact" element={<Board />} />
-            <Route path="/popUp" element={<Startgame/>}/>
+            <Route path="/popUp" element={<Startgame />} />
           </Routes>
-        </UserContextProvider>
-      </div>
-    </Router>
+        </div>
+      </Router>
+    </UserContextProvider>
   );
 }
 

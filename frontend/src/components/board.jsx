@@ -4,10 +4,9 @@ import crossIcon from "../assets/cross.png";
 import Startgame from "./startgame";
 import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
-import UserContext from "../context/userContext";
+import UserContext from "../context/UserContext";
 
-
-const socket = io("http://localhost:3001");
+const socket = io("http://localhost:8000");
 
 const winningCombination = [
   [0, 1, 2],
@@ -24,19 +23,19 @@ function Board() {
   const [startGamePopup, setStartGamePopup] = useState(true);
 
   const location = useLocation();
-  useEffect(()=>{
+  useEffect(() => {
     console.log("i am here");
     const roomSize = location.state?.roomSize || 0;
-    console.log({roomSize});
-    if(roomSize ===2){
-      console.log({roomSize});
-      setStartGamePopup(false)
+    console.log({ roomSize });
+    if (roomSize === 2) {
+      console.log({ roomSize });
+      setStartGamePopup(false);
     }
-    if(location.state.ok){
+    if (location.state.ok) {
       console.log("finally here");
-      setStartGamePopup(false)
+      setStartGamePopup(false);
     }
-  },[location.state])
+  }, [location.state]);
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
@@ -78,16 +77,14 @@ function Board() {
     return null;
   };
 
-  const onClose = ()=>{
+  const onClose = () => {
     console.log("in close function");
     let roomSize = localStorage.getItem("roomSize");
-    console.log({roomSize});
-    if(roomSize==="2"){
-      setStartGamePopup(false) 
-
+    console.log({ roomSize });
+    if (roomSize === "2") {
+      setStartGamePopup(false);
     }
-  }
-
+  };
 
   return (
     <>
@@ -129,7 +126,7 @@ function Board() {
           <div>{winner}</div>
         </div>
       </div>
-      {startGamePopup && <Startgame onClose={onClose}  />}
+      {startGamePopup && <Startgame onClose={onClose} />}
     </>
   );
 }

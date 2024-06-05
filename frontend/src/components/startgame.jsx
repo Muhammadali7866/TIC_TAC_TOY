@@ -2,9 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { MessageCircle, Copy, X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import UserContext from "../context/userContext";
 
-const socket = io("http://localhost:3001"); // Socket.io connection
+const socket = io("http://localhost:8000"); // Socket.io connection
 
 function Startgame({ onClose }) {
   // const [roomCode, setRoomCode] = useState(""); // State to hold room code

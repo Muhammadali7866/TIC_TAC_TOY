@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import UserContext from "../context/userContext";
+import UserContext from "../context/UserContext";
 import { useContext } from "react";
 
-const socket = io("http://localhost:3001");
+const socket = io("http://localhost:8000");
 
 const Popup = ({ onClose }) => {
   const [roomCode, setRoomCode] = useState(""); // State to hold room code
@@ -18,6 +18,7 @@ const Popup = ({ onClose }) => {
   const handleStartGame = () => {
     console.log("hello");
     socket.emit("createRoom"); // Emit createRoom event to the server
+    // console.log();
     socket.on("roomCreated", (roomCode) => {
       navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
     });
@@ -28,10 +29,10 @@ const Popup = ({ onClose }) => {
     console.log("in function");
     socket.emit("inputCode", inputCode);
     socket.on("roomJoinedSuccessfully", (size) => {
-      console.log("from join room func",size);
-      localStorage.setItem("roomSize",size)
+      console.log("from join room func", size);
+      localStorage.setItem("roomSize", size);
       if (size === 2) {
-        navigate("/contact", { state: { roomSize: size} });
+        navigate("/contact", { state: { roomSize: size } });
       }
     });
   };

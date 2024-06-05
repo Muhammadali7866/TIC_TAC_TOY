@@ -1,10 +1,16 @@
-import { useState } from "react";
-import UserContext from "./userContext";
+import { useEffect, useState } from "react";
+import UserContext from "./UserContext";
 
 const UserContextProvider = ({ children }) => {
-  const [roomSize, setRoomSize] = useState(0);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch("/currentUser")
+      .then((res) => res.json())
+      .then((data) => setUser(data)).catch(err => console.log(err));
+
+  }, []);
   return (
-    <UserContext.Provider value={{ roomSize, setRoomSize }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );

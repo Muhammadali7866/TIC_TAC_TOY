@@ -2,9 +2,12 @@ const express = require("express");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
-const app = express();
+// const app = express();
+const prisma = require("./database/prisma");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+
+const app = require("./utils/oAuth")
 
 const server = createServer(app);
 const io = require("socket.io")(server, {
@@ -27,6 +30,7 @@ io.on("connection", (socket) => {
     const roomCode = uuidv4();
     rooms[roomCode] = socket.id; // Store room association (example)
     socket.join(roomCode); // Join the room
+    
     console.log("Room created:", roomCode);
     socket.emit("roomCreated", roomCode); // Notify client about room creation
   });
@@ -50,17 +54,30 @@ io.on("connection", (socket) => {
 // Serve static files (if necessary)
 // app.use(express.static(path.join(__dirname, "./public")));
 
-// Example route
-// app.get("/", async (req, res) => {
-//   const users = await prisma.user.findMany({});
-//   return res.status(200).json({
-//     data: users,
-//   });
-// });
 
-const PORT = 3001;
+
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+// get current user 
+app.get("/currentUser",async(req,res)=>{
+  // fetch user based on google id
+  let user = await prisma.user.findFirst({
+    where:{
+      googleId:req.id
+    }
+  })
+  res.json({
+    user
+  })
+})
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = app;

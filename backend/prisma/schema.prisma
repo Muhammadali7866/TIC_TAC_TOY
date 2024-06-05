@@ -20,6 +20,7 @@ model user {
   profilePicture String?
   googleId       String? @unique
   name           String?
+  socketId    String?
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -37,19 +38,4 @@ model auth {
   updatedAt                   DateTime? @updatedAt
 }
 
-model Test {
-  id Int @id @default(autoincrement())
-  name String? 
-  @@map("tests")
-}
 
-model Comment {
-  id Int @id @default(autoincrement())
-  name String? @db.VarChar(200)
-  @@map("comments")
-}
-
-model testModel{
-  id Int @id @default(autoincrement())
-  name String?
-}

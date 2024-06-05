@@ -5,6 +5,7 @@ const app = express();
 const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
+const prisma = require("../database/prisma");
 const router = express.Router();
 
 // require("./database/prisma");
@@ -27,10 +28,11 @@ app.get(
   }
 );
 
- app.get("/auth/profile",(req,res)=>{
+app.get("/auth/profile", (req, res) => {
   console.log(req.user);
-  return res.send("Login succesfully")
- })
+  console.log("in profile sectio");
+  return res.send("Login succesfully");
+});
 
 app.get(
   "/auth/login",
