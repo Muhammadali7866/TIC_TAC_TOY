@@ -11,9 +11,12 @@ const router = express.Router();
 // require("./database/prisma");
 require("dotenv").config();
 require("../auth");
-app.use(
-  session({ secret: "secretKey", resave: true, saveUninitialized: true })
-);
+app.use(session({
+  secret: 'your_secret',
+  resave: false,
+  saveUninitialized: true,
+ 
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -21,7 +24,7 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirec: "/",
-    successRedirect: "/auth/profile",
+    successRedirect: "http://localhost:3000/",
   }),
   (req, res) => {
     res.redirect("/");
@@ -29,9 +32,12 @@ app.get(
 );
 
 app.get("/auth/profile", (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.send("Login succesfully");
+    
+  }
+  res.redirect('/auth/login');
   console.log(req.user);
-  console.log("in profile sectio");
-  return res.send("Login succesfully");
 });
 
 app.get(

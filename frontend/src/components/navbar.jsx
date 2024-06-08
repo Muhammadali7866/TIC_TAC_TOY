@@ -1,10 +1,28 @@
 import React, { useContext } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 function Navbar() {
-  const { user } = useContext(UserContext);
-  
+  const { user, handleLogout } = useContext(UserContext);
+
+  const handleLogoutt = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/logout", {
+        method: "GET",
+        credentials: "include", // Important for sending cookies
+      });
+      if (response.ok) {
+        handleLogout(); // Update user state on successful logout
+        window.location.href = "http://localhost:3000" // Redirect to home page or login page
+      } else {
+        throw new Error("Failed to logout");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Handle logout error if needed
+    }
+  };
+
   return (
     <>
       <header className="flex flex-row justify-between px-20 h-[70px] header nav">
@@ -40,38 +58,23 @@ function Navbar() {
                   Online
                 </Link>
               </>
-            ) : (
-              <>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/about"
-                >
-                  About
-                </Link>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/contact"
-                >
-                  Contact
-                </Link>
-              </>
-            )}
+            ) : null /* Render nothing when user is not logged in */}
           </div>
         </div>
         {user ? (
-          <a
+          <button
             className="bg-purple-700 h-9 w-[100px] rounded-full flex items-center justify-center text-lg text-black font-serif mt-4"
-            href="/api/logout"
+            onClick={handleLogoutt}
           >
             Logout
-          </a>
+          </button>
         ) : (
-          <a
+          <Link
             className="bg-purple-700 h-9 w-[100px] rounded-full flex items-center justify-center text-lg text-black font-serif mt-4"
-            href="http://localhost:8000/auth/login"
+            to="http://localhost:8000/auth/login"
           >
             Login
-          </a>
+          </Link>
         )}
       </header>
     </>

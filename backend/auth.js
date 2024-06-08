@@ -1,5 +1,9 @@
 const passport = require("passport");
 const prisma = require("./database/prisma");
+
+
+
+
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 passport.use(
   new GoogleStrategy(
@@ -56,6 +60,15 @@ passport.use(
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
+passport.deserializeUser(async(obj, done) => {
+  // done(null, obj);
+   // Deserialize user object (fetch user from database using user ID)
+   try {
+    const user = await prisma.user.findUnique({
+      where: { googleId: obj.id }, // Adjust as per your schema
+    });
+    done(null, user); // Attach user object to req.user
+  } catch (err) {
+    done(err, null);
+  }
 });
