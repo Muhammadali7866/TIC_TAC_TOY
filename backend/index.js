@@ -9,12 +9,12 @@ const { Server } = require("socket.io");
 
 const app = require("./utils/oAuth");
 
-
-app.use(cors({
-  origin: 'http://localhost:3000', // Adjust this to your frontend URL
-  credentials: true,
-}));
-
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Adjust this to your frontend URL
+    credentials: true,
+  })
+);
 
 const server = createServer(app);
 const io = require("socket.io")(server, {
@@ -28,7 +28,8 @@ const io = require("socket.io")(server, {
 
 // Example room management (to be handled as per your application needs)
 let rooms = {};
-
+console.log({ rooms });
+let roomData
 // Socket.io logic
 io.on("connection", (socket) => {
   console.log("a user is connected");
@@ -46,10 +47,20 @@ io.on("connection", (socket) => {
     console.log({ room });
     if (room && room.size < 2) {
       socket.join(inputCode);
+      rooms[inputCode] = socket.id
       console.log(`user ${socket.id} has joined the room`);
       socket.emit("roomJoinedSuccessfully", room.size);
+      roomData = room
+      console.log({ room });
+      io.to(room.id).emit("roomx", room.size);
     }
   });
+  socket.on("isPopup",()=>{
+    console.log(roomData.size);
+    let size = roomData.size
+    socket.emit("popupOff",size)
+    console.log({size});
+  })
 
   socket.on("disconnect", () => {
     console.log("user is disconnected");
@@ -77,15 +88,15 @@ app.use(
 app.get("/currentUser", async (req, res) => {
   // console.log({sessionStorage:req.sessionStore});
   // console.log({sessionStorage:req.session});
-  console.log({userData:req.user});
+  console.log({ userData: req.user });
   // fetch user based on google id
-  if(req?.user?.id){
-    let user = req.user
-      res.json({
-        user,
-      });
-  }else{
-    res.json({})
+  if (req?.user?.id) {
+    let user = req.user;
+    res.json({
+      user,
+    });
+  } else {
+    res.json({});
   }
 });
 
@@ -96,7 +107,7 @@ app.get("/logout", (req, res) => {
     }
     req.session.destroy(); // Destroy the session
     res.clearCookie("connect.sid"); // Clear session cookie if using express-session
-    res.status(200).json("ok")
+    res.status(200).json("ok");
   });
 });
 

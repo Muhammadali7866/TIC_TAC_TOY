@@ -47,7 +47,7 @@ function Navbar() {
                 </Link>
                 <Link
                   className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/friends"
+                  to="/friend"
                 >
                   Friends
                 </Link>

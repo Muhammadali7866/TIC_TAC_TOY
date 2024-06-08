@@ -11,11 +11,18 @@ function Startgame({ onClose }) {
 
   // Function to handle redirection
   const redirectToMain = () => {
-    let roomSize = localStorage.getItem("roomSize");
-    console.log({ roomSize });
-    if (roomSize === "2") {
+    socket.emit("isPopup")
+    socket.on("popupOff",(size)=>{
+      console.log({size});
+      if (size === 2) {
       navigate("/contact", { state: { roomSize: 2 } }); // Navigate to contact page with the entered code
     }
+    })
+    // let roomSize = localStorage.getItem("roomSize");
+    // console.log({ roomSize });
+    // if (roomSize === "2") {
+    //   navigate("/contact", { state: { roomSize: 2 } }); // Navigate to contact page with the entered code
+    // }
   };
 
   const location = useLocation();

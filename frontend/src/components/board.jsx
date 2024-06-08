@@ -35,6 +35,7 @@ function Board() {
       console.log("finally here");
       setStartGamePopup(false);
     }
+   
   }, [location.state]);
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));

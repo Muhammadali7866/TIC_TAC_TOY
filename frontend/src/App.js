@@ -17,7 +17,7 @@ function App() {
           <Navbar />
           <Routes>
             {/* <Route path="/" element={<Board />} /> */}
-            <Route path="/about" element={<Content />} />
+            <Route path="/friend" element={<Content />} />
             <Route path="/contact" element={<Board />} />
             <Route path="/popUp" element={<Startgame />} />
           </Routes>
