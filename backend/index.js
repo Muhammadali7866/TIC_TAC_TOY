@@ -29,7 +29,7 @@ const io = require("socket.io")(server, {
 // Example room management (to be handled as per your application needs)
 let rooms = {};
 console.log({ rooms });
-let roomData
+var roomData
 // Socket.io logic
 io.on("connection", (socket) => {
   console.log("a user is connected");
@@ -56,10 +56,16 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("isPopup",()=>{
-    console.log(roomData.size);
+    // console.log(roomData.size);
     let size = roomData.size
     socket.emit("popupOff",size)
     console.log({size});
+  })
+
+  // user move
+  socket.on("userMove",({index,variable})=>{
+    // now broadcast the move 
+    socket.broadcast.emit("updateMove",{index,variable})
   })
 
   socket.on("disconnect", () => {
