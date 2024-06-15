@@ -8,7 +8,7 @@ import Startgame from "./components/startgame";
 // import Home from './components/Home';
 // import About from './components/About';
 // import Contact from './components/Contact';
-
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <UserContextProvider>
@@ -18,7 +18,15 @@ function App() {
           <Routes>
             {/* <Route path="/" element={<Board />} /> */}
             <Route path="/friend" element={<Content />} />
-            <Route path="/contact" element={<Board />} />
+            {/* <Route path="/contact" element={<Board />} /> */}
+            <Route
+              path="/contact"
+              element={
+                <PrivateRoute>
+                  <Board />
+                </PrivateRoute>
+              }
+            />{" "}
             <Route path="/popUp" element={<Startgame />} />
           </Routes>
         </div>

@@ -68,12 +68,6 @@ function Board() {
         setBoardState(newBoardState); // Update the board state
         setIsNext(!isNext); // Toggle the next player
         setYourTurn(true);
-        // const winner = checkWin();
-        // if (winner) {
-        //   setWinner(winner);
-        //   setYourTurn(false)
-        //   socket.emit("lockGame")
-        // }
       }
     };
 

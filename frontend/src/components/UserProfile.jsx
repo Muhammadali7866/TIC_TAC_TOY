@@ -11,6 +11,7 @@ function UserProfile() {
         className="rounded-full w-32 h-32 border-4 border-blue-500" // use className instead of class
       />
       <div className="text-white">Muhammad Ali</div>
+      <div>Your Turn Now</div>
     </div>
   );
 }

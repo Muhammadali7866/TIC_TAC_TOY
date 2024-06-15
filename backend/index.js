@@ -29,7 +29,7 @@ const io = require("socket.io")(server, {
 // Example room management (to be handled as per your application needs)
 let rooms = {};
 console.log({ rooms });
-var roomData
+var roomData;
 // Socket.io logic
 io.on("connection", (socket) => {
   console.log("a user is connected");
@@ -47,31 +47,31 @@ io.on("connection", (socket) => {
     console.log({ room });
     if (room && room.size < 2) {
       socket.join(inputCode);
-      rooms[inputCode] = socket.id
+      rooms[inputCode] = socket.id;
       console.log(`user ${socket.id} has joined the room`);
       socket.emit("roomJoinedSuccessfully", room.size);
-      roomData = room
+      roomData = room;
       console.log({ room });
       io.to(room.id).emit("roomx", room.size);
     }
   });
-  socket.on("isPopup",()=>{
+  socket.on("isPopup", () => {
     // console.log(roomData.size);
-    let size = roomData.size
-    socket.emit("popupOff",size)
-    console.log({size});
-  })
+    let size = roomData.size??0;
+    socket.emit("popupOff", size);
+    console.log({ size });
+  });
 
   // user move
-  socket.on("userMove",({index,variable})=>{
-    // now broadcast the move 
-    socket.broadcast.emit("updateMove",{index,variable})
-  })
+  socket.on("userMove", ({ index, variable }) => {
+    // now broadcast the move
+    socket.broadcast.emit("updateMove", { index, variable });
+  });
 
   // local game
-  socket.on("lockGame",()=>{
-    socket.broadcast.emit("gameLock")
-  })
+  socket.on("lockGame", () => {
+    socket.broadcast.emit("gameLock");
+  });
   socket.on("disconnect", () => {
     console.log("user is disconnected");
     // Clean up room associations if needed
