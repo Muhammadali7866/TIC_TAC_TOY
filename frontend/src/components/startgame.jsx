@@ -10,6 +10,7 @@ function Startgame({ onClose }) {
   const navigate = useNavigate(); // React Router navigation hook
 
   // Function to handle redirection
+  console.log("hello from popup");
   const redirectToMain = () => {
     socket.emit("isPopup")
     socket.on("popupOff",(size)=>{

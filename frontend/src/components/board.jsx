@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import UserProfile from "./UserProfile";
+import { Youtube } from "lucide-react";
 
 const socket = io("http://localhost:8000");
 
@@ -31,6 +32,8 @@ function Board() {
     if (roomSize === 2) {
       console.log({ roomSize });
       setStartGamePopup(false);
+      setYourTurn(true)
+      console.log("now i turn your true");
     }
     if (location.state.ok) {
       console.log("finally here");
@@ -40,17 +43,19 @@ function Board() {
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
+  const [yourTurn,setYourTurn] = useState(false)
   
   const [winner, setWinner] = useState(null);
 
   const handleBoxClick = (index) => {
-    if (boardState[index] === null) {
+    if (boardState[index] === null && yourTurn) {
       const newBoardState = [...boardState];
       newBoardState[index] = isNext ? "X" : "O";
       const variable = isNext ? "X" : "O";
       socket.emit("userMove", { index, variable });
       setBoardState(newBoardState); // Update the board state
       setIsNext(!isNext); // Toggle the next player
+      setYourTurn(false)
       const winner = checkWin();
       if (winner) {
         setWinner(winner);
@@ -60,11 +65,12 @@ function Board() {
   useEffect(() => {
     const handleUpdateMove = ({ index, variable }) => {
       console.log({ index, variable });
-      if (boardState[index] === null) {
+      if (boardState[index] === null) { 
         const newBoardState = [...boardState];
         newBoardState[index] = variable;
         setBoardState(newBoardState); // Update the board state
         setIsNext(!isNext); // Toggle the next player
+        setYourTurn(true)
       }
     };
 
@@ -104,6 +110,7 @@ function Board() {
     console.log({ roomSize });
     if (roomSize === "2") {
       setStartGamePopup(false);
+     
     }
   };
 
