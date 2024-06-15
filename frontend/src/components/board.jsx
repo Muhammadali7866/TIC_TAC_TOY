@@ -32,7 +32,7 @@ function Board() {
     if (roomSize === 2) {
       console.log({ roomSize });
       setStartGamePopup(false);
-      setYourTurn(true)
+      setYourTurn(true);
       console.log("now i turn your true");
     }
     if (location.state.ok) {
@@ -43,8 +43,8 @@ function Board() {
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);
-  const [yourTurn,setYourTurn] = useState(false)
-  
+  const [yourTurn, setYourTurn] = useState(false);
+
   const [winner, setWinner] = useState(null);
 
   const handleBoxClick = (index) => {
@@ -55,26 +55,34 @@ function Board() {
       socket.emit("userMove", { index, variable });
       setBoardState(newBoardState); // Update the board state
       setIsNext(!isNext); // Toggle the next player
-      setYourTurn(false)
-      const winner = checkWin();
-      if (winner) {
-        setWinner(winner);
-      }
+      setYourTurn(false);
+      
     }
   };
   useEffect(() => {
     const handleUpdateMove = ({ index, variable }) => {
       console.log({ index, variable });
-      if (boardState[index] === null) { 
+      if (boardState[index] === null) {
         const newBoardState = [...boardState];
         newBoardState[index] = variable;
         setBoardState(newBoardState); // Update the board state
         setIsNext(!isNext); // Toggle the next player
-        setYourTurn(true)
+        setYourTurn(true);
+        // const winner = checkWin();
+        // if (winner) {
+        //   setWinner(winner);
+        //   setYourTurn(false)
+        //   socket.emit("lockGame")
+        // }
       }
     };
 
     socket.on("updateMove", handleUpdateMove);
+    const winner = checkWin();
+      if (winner) {
+        setWinner(winner);
+        setYourTurn(false)
+      }
 
     return () => {
       socket.off("updateMove", handleUpdateMove);
@@ -110,7 +118,6 @@ function Board() {
     console.log({ roomSize });
     if (roomSize === "2") {
       setStartGamePopup(false);
-     
     }
   };
 

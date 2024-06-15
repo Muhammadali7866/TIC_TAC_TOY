@@ -68,6 +68,10 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("updateMove",{index,variable})
   })
 
+  // local game
+  socket.on("lockGame",()=>{
+    socket.broadcast.emit("gameLock")
+  })
   socket.on("disconnect", () => {
     console.log("user is disconnected");
     // Clean up room associations if needed
