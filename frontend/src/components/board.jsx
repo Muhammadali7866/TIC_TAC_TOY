@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import UserProfile2 from "./UserProfile2";
 import axios from "axios";
+import { getGamePlayer } from "../services/service";
 
 const socket = io("http://localhost:8000");
 
@@ -29,8 +30,52 @@ function Board() {
   const [playerB, setPlayerB] = useState({});
   const [playerAShow, setPlayerAShow] = useState(false);
   const [playerBShow, setPlayerBShow] = useState(false);
+  const [dummyState, setDummyState] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("i am here");
+    console.log("Component mounted or location state changed");
+
+    socket.on("playerTurnSucc", async () => {
+      const roomsCode = localStorage.getItem("roomCode");
+      console.log({ roomsCode });
+      const user = await getGamePlayer(roomCode);
+      // setRoomId(roomsCode);
+      setPlayerB(user.playerB);
+      setPlayerBShow(true);
+    });
+
+    const roomSize = location.state?.roomSize || 0;
+    const roomCode = location.state?.roomCode;
+    console.log({ roomCode });
+    if (roomCode) {
+      localStorage.setItem("roomCode", roomCode);
+      setRoomId(roomCode);
+    }
+    console.log({ roomSize });
+    if (roomSize === 2) {
+      console.log({ roomSize });
+      setStartGamePopup(false);
+      setYourTurn(true);
+      console.log("now i turn your true");
+    }
+    const roomCode2 = location.state?.roomCode2;
+    if (roomCode2) {
+      console.log({ roomCode2 });
+      setRoomId(roomCode2);
+    }
+
+    if (location.state.ok) {
+      console.log("finally here");
+      setStartGamePopup(false);
+    }
+  }, [location.state]);
+
   useEffect(() => {
     console.log("now fetcg game player");
+    console.log({ roomId });
     const fetchData = async () => {
       try {
         let config = {
@@ -50,6 +95,7 @@ function Board() {
               if (response.data.playerB) {
                 setPlayerB(response.data.playerB);
                 setPlayerBShow(true);
+                socket.emit("playerTurn");
               }
             }
           })
@@ -63,31 +109,6 @@ function Board() {
 
     fetchData();
   }, [roomId]); // useEffect will re-run whenever userId changes
-
-  const location = useLocation();
-  useEffect(() => {
-    console.log("i am here");
-
-    const roomSize = location.state?.roomSize || 0;
-    const roomCode = location.state.roomCode || "";
-    console.log({roomCode});
-    setRoomId(roomCode);
-    console.log({ roomSize });
-    if (roomSize === 2) {
-      console.log({ roomSize });
-      setStartGamePopup(false);
-      setYourTurn(true);
-      console.log("now i turn your true");
-    }
-    const roomCode2 = location.state?.roomCode2||"";
-    console.log({roomCode2});
-    setRoomId(roomCode2)
-
-    if (location.state.ok) {
-      console.log("finally here");
-      setStartGamePopup(false);
-    }
-  }, [location.state]);
 
   const [boardState, setBoardState] = useState(Array(9).fill(null));
   const [isNext, setIsNext] = useState(true);

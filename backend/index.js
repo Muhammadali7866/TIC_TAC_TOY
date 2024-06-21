@@ -92,6 +92,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("userDataServer", users);
   });
 
+
+  socket.on("playerTurn",()=>{
+    socket.broadcast.emit("playerTurnSucc")
+  })
+
   socket.on("disconnect", () => {
     console.log("user is disconnected");
     // Clean up room associations if needed
