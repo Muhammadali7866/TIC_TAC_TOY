@@ -17,6 +17,7 @@ passport.use(
     async (request, accessToken, refreshToken, profile, done) => {
       console.log({accessToken});
       console.log({refreshToken});
+      console.log({profile});
       // fetch user
       let user = await prisma.user.upsert({
         where: {

@@ -20,11 +20,13 @@ model user {
   profilePicture String?
   googleId       String? @unique
   name           String?
-  socketId    String?
+  socketId       String?
 
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime?    @default(now())
+  updatedAt DateTime?    @updatedAt
   auth      auth?
+  playerA   gamePlayer[] @relation("playerA")
+  playerB   gamePlayer[] @relation("playerB")
 }
 
 model auth {
@@ -38,4 +40,14 @@ model auth {
   updatedAt                   DateTime? @updatedAt
 }
 
-
+// make game
+model gamePlayer {
+  id        Int       @id @default(autoincrement())
+  playerA   user?     @relation("playerA", fields: [playerAId], references: [id])
+  playerB   user?     @relation("playerB", fields: [playerBId], references: [id])
+  playerAId Int?
+  playerBId Int?
+  roomId    String?   @unique
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}

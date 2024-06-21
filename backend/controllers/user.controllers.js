@@ -1,4 +1,5 @@
 const passport = require("passport");
+const prisma = require("../database/prisma");
 require("../auth");
 
 
@@ -20,5 +21,44 @@ exports.loginUser = async (req, res) => {
   (req, res) => {
   res.redirect('/');
 }};
+
+
+
+exports.gamePlayer = async(req,res)=>{
+    try {
+      // fetch room id from params
+      let {roomId} = req.params
+      // fetch users based on the roomId
+      let users = await prisma.gamePlayer.findFirst({
+        where:{
+          roomId
+        },
+        include:{
+          playerA:true,
+          playerB:true
+        }
+      })
+      // if not 
+      if(!users){
+        throw {
+          success:false,
+          statusCode:400,
+          message:"users not found"
+        }
+      }
+      let {playerA,playerB} = users
+      
+      res.send({playerA,playerB})
+      
+    } catch (error) {
+      const {status} = error;
+      const s = status?status:500;
+      res.status(s).json({
+        status:error.success,
+        message:error.message,
+        statusCode:error.statusCode
+      })
+    }
+}
 
 

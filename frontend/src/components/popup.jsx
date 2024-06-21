@@ -12,14 +12,15 @@ const Popup = ({ onClose }) => {
   const [inputCode, setInputCode] = useState("");
   const navigate = useNavigate(); // React Router hook for navigation
 
-  const { setRoomSize } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   // Function to handle room creation
   const handleStartGame = () => {
     console.log("hello");
-    socket.emit("createRoom"); // Emit createRoom event to the server
+    socket.emit("createRoom", user.googleId); // Emit createRoom event to the server
     // console.log();
     socket.on("roomCreated", (roomCode) => {
+      console.log("room created from server to client first");
       navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
     });
   };
@@ -27,15 +28,20 @@ const Popup = ({ onClose }) => {
   // Function to handle enter code button click
   const handleEnterCode = () => {
     console.log("in function");
-    socket.emit("inputCode", inputCode);
+    socket.emit("inputCode", inputCode, user.googleId);
     socket.on("roomJoinedSuccessfully", (size) => {
       console.log("from join room func", size);
-      localStorage.setItem("roomSize", size);
+      localStorage.setItem("roomSize", { size, inputCode });
       if (size === 2) {
-        navigate("/contact", { state: { roomSize: size } });
+        navigate("/contact", {
+          state: { roomSize: size, roomCode2: inputCode },
+        });
       }
     });
   };
+  useEffect(() => {
+    console.log({ user });
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">

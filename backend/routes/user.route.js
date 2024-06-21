@@ -32,16 +32,6 @@ const app = express();
 //  );
 
 
-router.get("/",async(req,res)=>{
-  // fetch user profile based on thier id
-  let {userId} = req.params;
-
-  // fetch from db
-  let user = await prisma.user.findFirst({ 
-    where:{
-
-    }
-  })
-})
+router.get("/gamePlayer/:roomId",userController.gamePlayer)
 
 module.exports = router;

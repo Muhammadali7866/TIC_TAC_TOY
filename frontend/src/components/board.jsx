@@ -4,9 +4,9 @@ import crossIcon from "../assets/cross.png";
 import Startgame from "./startgame";
 import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
-import UserContext from "../context/UserContext";
 import UserProfile from "./UserProfile";
-import { Youtube } from "lucide-react";
+import UserProfile2 from "./UserProfile2";
+import axios from "axios";
 
 const socket = io("http://localhost:8000");
 
@@ -23,11 +23,55 @@ const winningCombination = [
 
 function Board() {
   const [startGamePopup, setStartGamePopup] = useState(true);
+  // const [roomId, setRoomId] = useState("72d14f89-5b34-4b44-b0b3-684bf7f04027");
+  const [roomId, setRoomId] = useState("");
+  const [playerA, setPlayerA] = useState({});
+  const [playerB, setPlayerB] = useState({});
+  const [playerAShow, setPlayerAShow] = useState(false);
+  const [playerBShow, setPlayerBShow] = useState(false);
+  useEffect(() => {
+    console.log("now fetcg game player");
+    const fetchData = async () => {
+      try {
+        let config = {
+          method: "get",
+          url: `http://localhost:8000/api/v1/users/gamePlayer/${roomId}`,
+        };
+
+        await axios
+          .request(config)
+          .then((response) => {
+            console.log({ dataAPI: response.data });
+            if (response.data) {
+              if (response.data.playerA) {
+                setPlayerA(response.data.playerA);
+                setPlayerAShow(true);
+              }
+              if (response.data.playerB) {
+                setPlayerB(response.data.playerB);
+                setPlayerBShow(true);
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [roomId]); // useEffect will re-run whenever userId changes
 
   const location = useLocation();
   useEffect(() => {
     console.log("i am here");
+
     const roomSize = location.state?.roomSize || 0;
+    const roomCode = location.state.roomCode || "";
+    console.log({roomCode});
+    setRoomId(roomCode);
     console.log({ roomSize });
     if (roomSize === 2) {
       console.log({ roomSize });
@@ -35,6 +79,10 @@ function Board() {
       setYourTurn(true);
       console.log("now i turn your true");
     }
+    const roomCode2 = location.state?.roomCode2||"";
+    console.log({roomCode2});
+    setRoomId(roomCode2)
+
     if (location.state.ok) {
       console.log("finally here");
       setStartGamePopup(false);
@@ -56,7 +104,6 @@ function Board() {
       setBoardState(newBoardState); // Update the board state
       setIsNext(!isNext); // Toggle the next player
       setYourTurn(false);
-      
     }
   };
   useEffect(() => {
@@ -73,10 +120,10 @@ function Board() {
 
     socket.on("updateMove", handleUpdateMove);
     const winner = checkWin();
-      if (winner) {
-        setWinner(winner);
-        setYourTurn(false)
-      }
+    if (winner) {
+      setWinner(winner);
+      setYourTurn(false);
+    }
 
     return () => {
       socket.off("updateMove", handleUpdateMove);
@@ -121,10 +168,11 @@ function Board() {
         <div className="col-span-1  p-4 text-center">
           {" "}
           <div className="">
-            <UserProfile />
+            {playerAShow && <UserProfile playerA={playerA} />}
           </div>
+          <div className="">{playerA.name}</div>
         </div>
-        <div class="col-span-1  p-4 text-center">
+        <div className="col-span-1  p-4 text-center">
           <div className="h-screen bg-custom-dark">
             <div className="board">
               <div className="row1 mt-5">
@@ -167,7 +215,7 @@ function Board() {
         <div className="col-span-1 p-4 text-center">
           {" "}
           <div className="">
-            <UserProfile />
+            {playerBShow && <UserProfile2 playerB={playerB} />}
           </div>
         </div>
       </div>
