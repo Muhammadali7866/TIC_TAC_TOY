@@ -140,10 +140,16 @@ function Board() {
     };
 
     socket.on("updateMove", handleUpdateMove);
-    const winner = checkWin();
-    if (winner) {
+    const winners = checkWin();
+
+    if (winners) {
       setWinner(winner);
       setYourTurn(false);
+    }
+    const draw = checkDraw();
+    if (draw) {
+      console.log(`set winner for draw ${draw}`);
+      setWinner(draw);
     }
 
     return () => {
@@ -171,7 +177,14 @@ function Board() {
         return boardState[a];
       }
     }
-    return null;
+    return false;
+  };
+  const checkDraw = () => {
+    const isDraw = boardState.every((cell) => cell !== null);
+    console.log(`in draw function ${isDraw}`);
+    if (isDraw) {
+      return "draw";
+    }
   };
 
   const onClose = () => {
@@ -182,6 +195,18 @@ function Board() {
       setStartGamePopup(false);
     }
   };
+
+  // on win send to server
+  useEffect(() => {
+    if (winner === null) {
+      return;
+    }
+    const result = winner;
+    console.log(`logs winner of result in effect ${result} , ${winner}`);
+
+    console.log("check winner ");
+    socket.emit("winner", { playerA, playerB, result, roomId });
+  }, [winner]);
 
   return (
     <>

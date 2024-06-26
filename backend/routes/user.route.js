@@ -34,4 +34,6 @@ const app = express();
 
 router.get("/gamePlayer/:roomId",userController.gamePlayer)
 
+router.get("/game-history/:userId",userController.gameHistory)
+
 module.exports = router;

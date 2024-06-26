@@ -62,3 +62,19 @@ exports.gamePlayer = async(req,res)=>{
 }
 
 
+
+exports.gameHistory = (req,res)=>{
+  try {
+    const {userId} = req.params
+    console.log({userId});
+    
+
+  } catch (error) {
+    const statusCode = error.statusCode ||500
+    res.status(statusCode).json({
+      success:error.success,
+      statusCode:error.statusCode,
+      message:error.message
+    })
+  }
+}

@@ -14,6 +14,10 @@ datasource db {
   url      = "postgresql://postgres:admin12@localhost:5432/mydb?schema=public"
 }
 
+enum gameResult {
+  draw
+}
+
 model user {
   id             Int     @id @default(autoincrement())
   email          String? @unique
@@ -22,11 +26,11 @@ model user {
   name           String?
   socketId       String?
 
-  createdAt DateTime?    @default(now())
-  updatedAt DateTime?    @updatedAt
-  auth      auth?
-  playerA   gamePlayer[] @relation("playerA")
-  playerB   gamePlayer[] @relation("playerB")
+  createdAt      DateTime?     @default(now())
+  updatedAt      DateTime?     @updatedAt
+  auth           auth?
+  playerA        gamePlayer[]  @relation("playerA")
+  playerB        gamePlayer[]  @relation("playerB")
 }
 
 model auth {
@@ -48,6 +52,9 @@ model gamePlayer {
   playerAId Int?
   playerBId Int?
   roomId    String?   @unique
+  result    String?
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
+
+

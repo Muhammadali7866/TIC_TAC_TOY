@@ -19,7 +19,7 @@ app.use(
   })
 );
 
-app.use("/api/v1/users",userRoutes)
+app.use("/api/v1/users", userRoutes);
 const server = createServer(app);
 const io = require("socket.io")(server, {
   cors: {
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
       // update user game player
 
       await userToGamePlayer(googleId, inputCode);
-      socket.emit("roomJoinedSuccessfully", room.size,inputCode);
+      socket.emit("roomJoinedSuccessfully", room.size, inputCode);
       roomData = room;
       console.log({ room });
       io.to(room.id).emit("roomx", room.size);
@@ -92,10 +92,34 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("userDataServer", users);
   });
 
+  socket.on("playerTurn", () => {
+    socket.broadcast.emit("playerTurnSucc");
+  });
 
-  socket.on("playerTurn",()=>{
-    socket.broadcast.emit("playerTurnSucc")
-  })
+  // on win the user
+  socket.on("winner", async ({ playerA, playerB, result, roomId }) => {
+    console.log("in winner logs");
+    console.log({ playerA });
+    console.log({ playerB });
+    console.log({ result });
+    let userWin;
+    if (result === "X") {
+      userWin = "playerA win";
+    } else if (result === "O") {
+      userWin = "playerB win";
+    } else if (result === "draw") {
+      userWin = "draw";
+    }
+    console.log({ userWin });
+    await prisma.gamePlayer.update({
+      where: {
+        roomId,
+      },
+      data: {
+        result: userWin,
+      },
+    });
+  });
 
   socket.on("disconnect", () => {
     console.log("user is disconnected");
@@ -146,10 +170,8 @@ app.get("/logout", (req, res) => {
   });
 });
 
-
-app.get("/gamePlayer",(req,res)=>{
+app.get("/gamePlayer", (req, res) => {
   // need to get the game player of the users
-  
-})
+});
 
 module.exports = app;
