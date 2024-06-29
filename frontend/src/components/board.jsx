@@ -143,13 +143,21 @@ function Board() {
     const winners = checkWin();
 
     if (winners) {
+      console.log(`the winner is ${winners}`);
+      const result = winners
+      socket.emit("winner", { playerA, playerB, result, roomId });
+
       setWinner(winner);
+      
       setYourTurn(false);
     }
     const draw = checkDraw();
     if (draw) {
       console.log(`set winner for draw ${draw}`);
-      setWinner(draw);
+      const result = "draw"
+      socket.emit("winner", { playerA, playerB, result, roomId });
+
+      setWinner("draw");
     }
 
     return () => {
@@ -183,7 +191,7 @@ function Board() {
     const isDraw = boardState.every((cell) => cell !== null);
     console.log(`in draw function ${isDraw}`);
     if (isDraw) {
-      return "draw";
+      return true;
     }
   };
 
@@ -196,17 +204,6 @@ function Board() {
     }
   };
 
-  // on win send to server
-  useEffect(() => {
-    if (winner === null) {
-      return;
-    }
-    const result = winner;
-    console.log(`logs winner of result in effect ${result} , ${winner}`);
-
-    console.log("check winner ");
-    socket.emit("winner", { playerA, playerB, result, roomId });
-  }, [winner]);
 
   return (
     <>
