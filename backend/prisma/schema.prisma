@@ -26,11 +26,11 @@ model user {
   name           String?
   socketId       String?
 
-  createdAt      DateTime?     @default(now())
-  updatedAt      DateTime?     @updatedAt
-  auth           auth?
-  playerA        gamePlayer[]  @relation("playerA")
-  playerB        gamePlayer[]  @relation("playerB")
+  createdAt DateTime?    @default(now())
+  updatedAt DateTime?    @updatedAt
+  auth      auth?
+  playerA   gamePlayer[] @relation("playerA")
+  playerB   gamePlayer[] @relation("playerB")
 }
 
 model auth {
@@ -57,4 +57,9 @@ model gamePlayer {
   updatedAt DateTime? @updatedAt
 }
 
+model Friend {
+  id     Int  @id @default(autoincrement())
+  userId Int?
 
+  @@map("friends")
+}
