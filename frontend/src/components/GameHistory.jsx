@@ -16,26 +16,31 @@ function GameHistory() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Game History</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
+    <div className="h-screen bg-custom-dark text-white p-4 ">
+      <h2 className="text-2xl font-semibold mb-4 mt-10 ml-20">Game History</h2>
+      <div className="overflow-x-auto w-full max-w-4xl ml-20 mt-3">
+        <table className="min-w-full shadow-md rounded-lg">
           <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">Opponent</th>
-              <th className="py-2 px-4 border-b">Date</th>
-              <th className="py-2 px-4 border-b">Result</th>
+            <tr className="bg-gray-800">
+              <th className="py-2 px-4 border-b border-gray-700">Opponent</th>
+              <th className="py-2 px-4 border-b border-gray-700">Date</th>
+              <th className="py-2 px-4 border-b border-gray-700">Result</th>
             </tr>
           </thead>
           <tbody>
             {gameHistory.length > 0 ? (
               gameHistory.map((game, index) => (
-                <tr key={index} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b text-center">{game.playerA.name}</td>
-                  <td className="py-2 px-4 border-b text-center">
+                <tr
+                  key={index}
+                  className="hover:bg-gray-700 transition-colors duration-200"
+                >
+                  <td className="py-2 px-4 border-b border-gray-700 text-center">
+                    {game.playerA.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-700 text-center">
                     {new Date(game.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="py-2 px-4 border-b text-center">
+                  <td className="py-2 px-4 border-b border-gray-700 text-center">
                     {game.result}
                   </td>
                 </tr>

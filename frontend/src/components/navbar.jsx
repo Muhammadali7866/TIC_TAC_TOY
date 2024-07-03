@@ -49,7 +49,7 @@ function Navbar() {
                   className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
                   to="/friend"
                 >
-                  Friends
+                  Play Game
                 </Link>
                 <Link
                   className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
