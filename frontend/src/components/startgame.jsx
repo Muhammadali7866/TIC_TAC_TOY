@@ -31,12 +31,12 @@ function Startgame({ onClose }) {
   // backdrop-blur-sm
   return (
     <div className="fixed inset-0 bg-opacity-30  flex justify-center items-center">
-      <div className="mt-6 flex flex-col gap-5 text-white w-[300px] h-[300px]">
+      <div className="mt-6 flex flex-col gap-5 text-white w-[350px] h-[350px]">
         <button className="place-self-end text-white">
           <X onClick={redirectToMain} size={30} />
         </button>
         <div className="bg-blue-800 rounded-lg px-20 py-10 flex flex-col gap-3 items-center">
-          <div className="font-medium text-lg">`Your code is {roomCode}`</div>
+          <div className="font-medium text-lg">Your code is {roomCode}</div>
           <div className="font-medium text-lg">OR</div>
           <button className="font-medium text-lg">Start Game</button>
           <div className="flex flex-row gap-3">

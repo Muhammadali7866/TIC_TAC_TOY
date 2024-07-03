@@ -41,7 +41,9 @@ io.on("connection", (socket) => {
   socket.on("createRoom", async (googleId) => {
     console.log({ googleId });
     await updateUserSocket(googleId, socket.id);
-    const roomCode = uuidv4();
+    // const roomCode = uuidv4();
+    const roomCode = String(Math.floor(Math.random() * 9000) + 1000);
+
     rooms[roomCode] = socket.id; // Store room association (example)
     socket.join(roomCode); // Join the room
     // now update user with game player

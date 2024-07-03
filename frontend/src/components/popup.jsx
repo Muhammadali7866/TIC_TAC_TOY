@@ -44,24 +44,24 @@ const Popup = ({ onClose }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-      <div className="mt-6 flex flex-col gap-5 text-white">
+    <div className="fixed inset-0 bg-opacity-30 backdrop-blur-md flex justify-center items-center">
+      <div className="mt-6 flex flex-col gap-2 text-white">
         <button className="place-self-end text-white">
-          <X onClick={onClose} size={30} />
+          <X onClick={onClose} size={40} style={{ color: '#1f3540'}} />
         </button>
-        <div className="bg-blue-800 rounded-lg px-20 py-10 flex flex-col gap-3 items-center">
+        <div className="bg-purple-900 rounded-lg px-20 py-14 flex flex-col gap-3 items-center">
           <div className="font-medium text-lg">
-            <button onClick={handleStartGame}>Start Game </button>
+            <button onClick={handleStartGame} className="text-white font-serif text-xl">Start Game </button>
           </div>
-          <div className="font-medium text-lg">OR</div>
+          <div className="font-medium text-lg font-serif">OR</div>
           <input
-            className="w-full px-1 py-1 text-black rounded-xl"
+            className="w-full px-1 py-1 text-black rounded-md"
             placeholder="Enter your code"
             type="text"
             value={inputCode}
             onChange={(event) => setInputCode(event.target.value)}
           />
-          <button className="font-medium text-lg" onClick={handleEnterCode}>
+          <button className="font-medium text-lg font-serif" onClick={handleEnterCode}>
             Enter code
           </button>
         </div>
