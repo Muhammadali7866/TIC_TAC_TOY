@@ -31,6 +31,7 @@ model user {
   auth      auth?
   playerA   gamePlayer[] @relation("playerA")
   playerB   gamePlayer[] @relation("playerB")
+  friends   Friend[]     @relation("friends")
 }
 
 model auth {
@@ -58,8 +59,9 @@ model gamePlayer {
 }
 
 model Friend {
-  id     Int  @id @default(autoincrement())
-  userId Int?
+  id      Int   @id @default(autoincrement())
+  userId  Int?
+  friends user? @relation("friends", fields: [userId], references: [id])
 
   @@map("friends")
 }
