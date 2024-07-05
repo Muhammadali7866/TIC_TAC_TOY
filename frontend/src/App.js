@@ -10,6 +10,7 @@ import Startgame from "./components/startgame";
 // import Contact from './components/Contact';
 import PrivateRoute from "./components/PrivateRoute";
 import GameHistory from "./components/GameHistory";
+import Chat from "./components/Chat";
 function App() {
   return (
     <UserContextProvider>
@@ -20,7 +21,7 @@ function App() {
             {/* <Route path="/" element={<Board />} /> */}
             <Route path="/friend" element={<Content />} />
             <Route path="/history" element={<GameHistory />} />
-            {/* <Route path="/contact" element={<Board />} /> */}
+            <Route path="/chat" element={<Chat />} />
             <Route
               path="/contact"
               element={

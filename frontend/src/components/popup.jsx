@@ -47,11 +47,16 @@ const Popup = ({ onClose }) => {
     <div className="fixed inset-0 bg-opacity-30 backdrop-blur-md flex justify-center items-center">
       <div className="mt-6 flex flex-col gap-2 text-white">
         <button className="place-self-end text-white">
-          <X onClick={onClose} size={40} style={{ color: '#1f3540'}} />
+          <X onClick={onClose} size={40} style={{ color: "#1f3540" }} />
         </button>
         <div className="bg-purple-900 rounded-lg px-20 py-14 flex flex-col gap-3 items-center">
           <div className="font-medium text-lg">
-            <button onClick={handleStartGame} className="text-white font-serif text-xl">Start Game </button>
+            <button
+              onClick={handleStartGame}
+              className="text-white font-serif text-xl"
+            >
+              Start Game{" "}
+            </button>
           </div>
           <div className="font-medium text-lg font-serif">OR</div>
           <input
@@ -61,7 +66,10 @@ const Popup = ({ onClose }) => {
             value={inputCode}
             onChange={(event) => setInputCode(event.target.value)}
           />
-          <button className="font-medium text-lg font-serif" onClick={handleEnterCode}>
+          <button
+            className="font-medium text-lg font-serif"
+            onClick={handleEnterCode}
+          >
             Enter code
           </button>
         </div>

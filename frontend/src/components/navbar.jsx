@@ -30,7 +30,7 @@ function Navbar() {
           <p className="text-4xl font-medium text-purple-900 dark:text-purple font-serif">
             TIKX
           </p>
-          <div className="flex flex-row mt-2 h-[50px] justify-between w-[330px]">
+          <div className="flex gap-1 flex-row mt-2 h-[50px] justify-between w-[400px]">
             {user ? (
               <>
                 <Link
@@ -56,6 +56,12 @@ function Navbar() {
                   to="/online"
                 >
                   Online
+                </Link>
+                <Link
+                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                  to="/chat"
+                >
+                  chat
                 </Link>
               </>
             ) : null /* Render nothing when user is not logged in */}
