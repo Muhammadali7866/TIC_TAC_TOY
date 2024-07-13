@@ -18,6 +18,12 @@ enum gameResult {
   draw
 }
 
+enum friendshipStatus {
+  pending
+  accept
+  decline
+}
+
 model user {
   id             Int     @id @default(autoincrement())
   email          String? @unique
@@ -31,7 +37,9 @@ model user {
   auth      auth?
   playerA   gamePlayer[] @relation("playerA")
   playerB   gamePlayer[] @relation("playerB")
-  friends   Friend[]     @relation("friends")
+
+  sentRequest      FriendShip[] @relation("sendRequest")
+  receivedRequests FriendShip[] @relation("receivedRequests")
 }
 
 model auth {
@@ -58,10 +66,16 @@ model gamePlayer {
   updatedAt DateTime? @updatedAt
 }
 
-model Friend {
-  id      Int   @id @default(autoincrement())
-  userId  Int?
-  friends user? @relation("friends", fields: [userId], references: [id])
+model FriendShip {
+  id               Int      @id @default(autoincrement())
+  requesterId      Int?
+  sendRequest      user?    @relation("sendRequest", fields: [requesterId], references: [id])
+  requestedId      Int?
+  receivedRequests user?    @relation("receivedRequests", fields: [requestedId], references: [id])
+  status           String?  @default("pending")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  @@map("friends")
+  @@unique([requesterId, requestedId])
+  @@map("friendships")
 }
