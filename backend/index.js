@@ -7,6 +7,7 @@ const prisma = require("./database/prisma");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const userRoutes = require("./routes/user.route");
+const gameRoutes = require("./routes/game.route");
 
 const app = require("./utils/oAuth");
 const { updateUserSocket } = require("./utils/updateUserSocket");
@@ -20,6 +21,7 @@ app.use(
 );
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/game", gameRoutes);
 const server = createServer(app);
 const io = require("socket.io")(server, {
   cors: {
@@ -174,6 +176,15 @@ app.get("/logout", (req, res) => {
 
 app.get("/gamePlayer", (req, res) => {
   // need to get the game player of the users
+});
+
+app.get("/getFetch", async (req, res) => {
+  let data = await prisma.friendShip.findMany({
+    where: {
+      requesterId: 1,
+    },
+  });
+  console.log({ data });
 });
 
 module.exports = app;
