@@ -22,6 +22,7 @@ const Popup = ({ onClose }) => {
     socket.on("roomCreated", (roomCode) => {
       console.log("room created from server to client first");
       navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
+      localStorage.setItem("playerA", true);
     });
   };
 
@@ -32,6 +33,7 @@ const Popup = ({ onClose }) => {
     socket.on("roomJoinedSuccessfully", (size) => {
       console.log("from join room func", size);
       localStorage.setItem("roomSize", { size, inputCode });
+      localStorage.setItem("playerB", true);
       if (size === 2) {
         navigate("/contact", {
           state: { roomSize: size, roomCode2: inputCode },

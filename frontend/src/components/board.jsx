@@ -238,7 +238,7 @@ function Board() {
             {playerAShow && <UserProfile playerA={playerA} />}
           </div>
           <div className="">{playerA.name}</div>
-          <div className="">{friendShipToggle ? friendShipStatus : ""}</div>
+          <div className="">{localStorage.getItem("playerA") && friendShipToggle && friendShipStatus }</div>
         </div>
         <div className="col-span-1  p-4 text-center">
           <div className="h-screen bg-custom-dark">
@@ -285,6 +285,9 @@ function Board() {
           <div className="">
             {playerBShow && <UserProfile2 playerB={playerB} />}
           </div>
+          {/* <div className="">{friendShipToggle ? friendShipStatus : ""}</div> */}
+          <div className="">{localStorage.getItem("playerB") && friendShipToggle && friendShipStatus }</div>
+
         </div>
       </div>
 
