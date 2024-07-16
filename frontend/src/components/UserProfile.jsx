@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-
-
-
-function UserProfile({playerA}) {
- 
+function UserProfile({ playerA }) {
   return (
     <div className="h-screen flex flex-col gap-2 items-center">
       <img
@@ -13,6 +9,7 @@ function UserProfile({playerA}) {
       />
       <div className="text-white">{playerA.name}</div>
       <div>Your Turn Now</div>
+      <div>{/* <button onClick=""}>friendSHip</button> */}</div>
     </div>
   );
 }

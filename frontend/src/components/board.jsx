@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import UserProfile2 from "./UserProfile2";
 import axios from "axios";
-import { getGamePlayer } from "../services/service";
+import { checkFriendShipStatus, getGamePlayer } from "../services/service";
 
 const socket = io("http://localhost:8000");
 
@@ -31,6 +31,7 @@ function Board() {
   const [playerAShow, setPlayerAShow] = useState(false);
   const [playerBShow, setPlayerBShow] = useState(false);
   const [dummyState, setDummyState] = useState(false);
+  const [friendShipStatus, setFriendShipStatus] = useState("");
 
   const location = useLocation();
 
@@ -144,17 +145,17 @@ function Board() {
 
     if (winners) {
       console.log(`the winner is ${winners}`);
-      const result = winners
+      const result = winners;
       socket.emit("winner", { playerA, playerB, result, roomId });
 
       setWinner(winner);
-      
+
       setYourTurn(false);
     }
     const draw = checkDraw();
     if (draw) {
       console.log(`set winner for draw ${draw}`);
-      const result = "draw"
+      const result = "draw";
       socket.emit("winner", { playerA, playerB, result, roomId });
 
       setWinner("draw");
@@ -204,6 +205,19 @@ function Board() {
     }
   };
 
+  // const fetchfreindShipStatus = async () => {
+  //   const playload = {
+  //     userAId: playerA.id,
+  //     userBId: playerB.id,
+  //   };
+  //   const status = await checkFriendShipStatus(playload);
+  //   return status
+
+  // };
+  // useEffect(() => {
+  //   const status = fetchfreindShipStatus()
+  //   console.log({status});
+  // }, [playerB]);
 
   return (
     <>
@@ -213,7 +227,7 @@ function Board() {
           <div className="">
             {playerAShow && <UserProfile playerA={playerA} />}
           </div>
-          <div className="">{playerA.name}</div>
+          <div className="">{playerA}</div>
         </div>
         <div className="col-span-1  p-4 text-center">
           <div className="h-screen bg-custom-dark">

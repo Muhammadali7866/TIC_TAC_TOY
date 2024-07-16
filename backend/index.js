@@ -8,8 +8,11 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const userRoutes = require("./routes/user.route");
 const gameRoutes = require("./routes/game.route");
+const bodyParser = require("body-parser");
+// Parse application/json
 
 const app = require("./utils/oAuth");
+app.use(bodyParser.json());
 const { updateUserSocket } = require("./utils/updateUserSocket");
 const { userToGamePlayer } = require("./utils/userToGamePlayer");
 

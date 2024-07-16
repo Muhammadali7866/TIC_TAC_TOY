@@ -40,3 +40,24 @@ export function getGameHistory(userId) {
       });
   });
 }
+
+// export function checkFriendShipStatus(payload) {
+//   return new Promise((resolve, reject) => {
+//     let config = {
+//       method: "get",
+//       url: `http://localhost:8000/api/v1/game/friendShip-status`,
+//       data: payload,
+//     };
+
+//     axios
+//       .request(config)
+//       .then((response) => {
+//         if (response.data) {
+//           resolve(response.data);
+//         }
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// }

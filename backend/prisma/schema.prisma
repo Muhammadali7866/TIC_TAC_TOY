@@ -72,7 +72,7 @@ model FriendShip {
   sendRequest      user?    @relation("sendRequest", fields: [requesterId], references: [id])
   requestedId      Int?
   receivedRequests user?    @relation("receivedRequests", fields: [requestedId], references: [id])
-  status           String?  @default("pending")
+  status           friendshipStatus?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
