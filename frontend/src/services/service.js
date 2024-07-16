@@ -41,23 +41,33 @@ export function getGameHistory(userId) {
   });
 }
 
-// export function checkFriendShipStatus(payload) {
-//   return new Promise((resolve, reject) => {
-//     let config = {
-//       method: "get",
-//       url: `http://localhost:8000/api/v1/game/friendShip-status`,
-//       data: payload,
-//     };
+export function checkFriendShipStatus(playerAId, playerBID) {
+  const data = {
+    userAId: playerAId,
+    userBId: playerBID,
+  };
+  return new Promise((resolve, reject) => {
+    let config = {
+      method: "post",
+      url: `http://localhost:8000/api/v1/game/friendShip-status`,
+      data: data,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-//     axios
-//       .request(config)
-//       .then((response) => {
-//         if (response.data) {
-//           resolve(response.data);
-//         }
-//       })
-//       .catch((error) => {
-//         reject(error);
-//       });
-//   });
-// }
+    axios
+      .request(config)
+      .then((response) => {
+        if (response.data) {
+          console.log(response.data);
+          resolve(response.data);
+        } else {
+          reject(new Error("No data received"));
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}

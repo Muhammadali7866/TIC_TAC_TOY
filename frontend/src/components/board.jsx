@@ -32,6 +32,7 @@ function Board() {
   const [playerBShow, setPlayerBShow] = useState(false);
   const [dummyState, setDummyState] = useState(false);
   const [friendShipStatus, setFriendShipStatus] = useState("");
+  const [friendShipToggle, setFriendShipToggle] = useState(false);
 
   const location = useLocation();
 
@@ -205,19 +206,28 @@ function Board() {
     }
   };
 
-  // const fetchfreindShipStatus = async () => {
-  //   const playload = {
-  //     userAId: playerA.id,
-  //     userBId: playerB.id,
-  //   };
-  //   const status = await checkFriendShipStatus(playload);
-  //   return status
+  const fetchfreindShipStatus = async () => {
+    if (playerAShow && playerBShow) {
+      console.log(
+        `the payload is set now call the friendship api ${playerA.id} and ${playerB.id}`
+      );
 
-  // };
-  // useEffect(() => {
-  //   const status = fetchfreindShipStatus()
-  //   console.log({status});
-  // }, [playerB]);
+      const status = await checkFriendShipStatus(playerA.id, playerB.id);
+      return status;
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const status = await fetchfreindShipStatus();
+      console.log({ status });
+      if (status) {
+        setFriendShipStatus(status.data);
+      }
+      setFriendShipToggle(true);
+    };
+
+    fetchData();
+  }, [playerBShow]);
 
   return (
     <>
@@ -227,7 +237,8 @@ function Board() {
           <div className="">
             {playerAShow && <UserProfile playerA={playerA} />}
           </div>
-          <div className="">{playerA}</div>
+          <div className="">{playerA.name}</div>
+          <div className="">{friendShipToggle ? friendShipStatus : ""}</div>
         </div>
         <div className="col-span-1  p-4 text-center">
           <div className="h-screen bg-custom-dark">
