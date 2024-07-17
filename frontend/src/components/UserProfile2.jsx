@@ -27,8 +27,11 @@ function UserProfile({ playerB, friendShipToggle, friendShipStatus }) {
       console.log(friendShipStatus);
       if (friendShipStatus === "pending") {
         console.log("now in the toggle");
-
-        setSendRequest(true);
+        if (playerBPresence) {
+          console.log("player B presence");
+          console.log({playerBPresence});
+          setSendRequest(true);
+        }
       }
     }
   }, [friendShipStatus, friendShipToggle]);
@@ -41,7 +44,7 @@ function UserProfile({ playerB, friendShipToggle, friendShipStatus }) {
           alt="Rounded Image"
           className="rounded-full w-32 h-32 border-4 border-blue-500" // use className instead of class
         />
-        {sendRequest? (
+        {sendRequest ? (
           <button
             // onClick={sendFriendRequest}
             className="absolute inset-0  text-blue-800 mb-20 ml-[120px] "

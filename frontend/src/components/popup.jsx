@@ -22,8 +22,11 @@ const Popup = ({ onClose }) => {
     socket.on("roomCreated", (roomCode) => {
       console.log("room created from server to client first");
       navigate("/contact", { state: { roomCode } }); // Navigate to contact page with the room code
-      localStorage.setItem("playerA", true);
     });
+    // set player presence in local storage
+    let check = localStorage.getItem("playerA");
+    let checkTYpe = localStorage.getItem("playerB");
+    if (!check && !checkTYpe) localStorage.setItem("playerA",true);
   };
 
   // Function to handle enter code button click
@@ -33,7 +36,9 @@ const Popup = ({ onClose }) => {
     socket.on("roomJoinedSuccessfully", (size) => {
       console.log("from join room func", size);
       localStorage.setItem("roomSize", { size, inputCode });
-      localStorage.setItem("playerB", true);
+      // set player presence in local storage
+
+      localStorage.setItem("playerB",true);
       if (size === 2) {
         navigate("/contact", {
           state: { roomSize: size, roomCode2: inputCode },
@@ -44,6 +49,10 @@ const Popup = ({ onClose }) => {
   useEffect(() => {
     console.log({ user });
   }, []);
+
+  // useEffect(()=>{
+  //   localStorage.setItem("playerA", true);
+  // },[])
 
   return (
     <div className="fixed inset-0 bg-opacity-30 backdrop-blur-md flex justify-center items-center">
