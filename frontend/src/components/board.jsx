@@ -235,7 +235,13 @@ function Board() {
         <div className="col-span-1  p-4 text-center">
           {" "}
           <div className="">
-            {playerAShow && <UserProfile playerA={playerA} />}
+            {playerAShow && (
+              <UserProfile
+                playerA={playerA}
+                friendShipToggle={friendShipToggle}
+                friendShipStatus={friendShipStatus}
+              />
+            )}
           </div>
           <div className="">{playerA.name}</div>
           <div className="">

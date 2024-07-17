@@ -15,11 +15,20 @@
 // }
 
 // export default UserProfile;
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons"; // Import the desired icon
 
-function UserProfile({ playerA, sendFriendRequest }) {
+function UserProfile({ playerA, friendShipToggle, friendShipStatus }) {
+  const [sendRequestToggle, setSendRequestToggle] = useState(false);
+  useEffect(() => {
+    const playerAPresence = localStorage.getItem("playerA");
+    console.log({ playerAPresence, friendShipStatus, friendShipToggle });
+    if (friendShipToggle && playerAPresence) {
+      setSendRequestToggle(true);
+    }
+  }, []);
+
   return (
     <div className="h-screen flex flex-col gap-2 items-center">
       <div className="relative">
@@ -28,12 +37,14 @@ function UserProfile({ playerA, sendFriendRequest }) {
           alt="Rounded Image"
           className="rounded-full w-32 h-32 border-4 border-blue-500"
         />
-        <button
-          onClick={sendFriendRequest}
-          className="absolute inset-0  text-blue-800 mb-20 ml-[120px] "
-        >
-          <FontAwesomeIcon icon={faUserPlus} className="text-2xl" /> {/* Icon added here */}
-        </button>
+        {sendRequestToggle ? (
+          <button className="absolute inset-0  text-blue-800 mb-20 ml-[120px] ">
+            <FontAwesomeIcon icon={faUserPlus} className="text-2xl" />{" "}
+            {/* Icon added here */}
+          </button>
+        ) : (
+          "none"
+        )}
       </div>
       <div className="text-white">{playerA.name}</div>
       <div>Your Turn Now</div>
@@ -42,4 +53,3 @@ function UserProfile({ playerA, sendFriendRequest }) {
 }
 
 export default UserProfile;
-
