@@ -133,6 +133,42 @@ io.on("connection", (socket) => {
     // Clean up room associations if needed
     // Example: delete rooms[roomCode];
   });
+
+  // update user request
+  socket.on("sendRequest", async ({ playerA, playerB,request }) => {
+    // const friendship = await prisma.friendShip.findFirst({
+    //   where: {
+    //     OR: [
+    //       {
+    //         requesterId: 2,
+    //         requestedId: 1,
+    //       },
+    //       {
+    //         requesterId: 1,
+    //         requestedId: 2,
+    //       },
+    //     ],
+    //   },
+    // });
+    // // If a friendship record is found, update it
+    // if (friendship) {
+    //   const updatedFriendship = await prisma.friendShip.update({
+    //     where: {
+    //       id: friendship.id,
+    //     },
+    //     data: {
+    //       status: "accept",
+    //     },
+    //   });
+
+    //   console.log("Friendship updated:", updatedFriendship);
+    // } else {
+    //   console.log("No matching friendship found.");
+    // }
+
+    // send back to other user
+    socket.broadcast.emit("userAccept",request)
+  });
 });
 
 // Serve static files (if necessary)

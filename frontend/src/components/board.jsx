@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import circleIcon from "../assets/circle.png";
 import crossIcon from "../assets/cross.png";
 import Startgame from "./startgame";
-import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import UserProfile2 from "./UserProfile2";
 import axios from "axios";
 import { checkFriendShipStatus, getGamePlayer } from "../services/service";
+import { toast, ToastContainer } from "react-toastify";
+import CustomToast from "./CustomToast.js";
+import "react-toastify/dist/ReactToastify.css";
+import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000");
 
@@ -228,6 +231,19 @@ function Board() {
 
     fetchData();
   }, [playerBShow]);
+  const notify = () => {
+    toast(<CustomToast />, {
+      position: "top-right",
+      autoClose: 6000,
+    });
+  };
+  useEffect(() => {
+    socket.on("userAccept", (request) => {
+     if(request=="userA"){
+      
+     }
+    });
+  }, []);
 
   return (
     <>
@@ -238,6 +254,7 @@ function Board() {
             {playerAShow && (
               <UserProfile
                 playerA={playerA}
+                playerB={playerB}
                 friendShipToggle={friendShipToggle}
                 friendShipStatus={friendShipStatus}
               />
@@ -309,6 +326,7 @@ function Board() {
           </div>
         </div>
       </div>
+      <ToastContainer />
 
       {startGamePopup && <Startgame onClose={onClose} />}
     </>

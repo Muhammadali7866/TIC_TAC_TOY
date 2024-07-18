@@ -1,25 +1,12 @@
-// import React, { useContext, useEffect, useState } from "react";
-// function UserProfile({ playerA }) {
-//   return (
-//     <div className="h-screen flex flex-col gap-2 items-center">
-//       <img
-//         src={playerA.profilePicture} // use curly braces correctly
-//         alt="Rounded Image"
-//         className="rounded-full w-32 h-32 border-4 border-blue-500" // use className instead of class
-//       />
-//       <div className="text-white">{playerA.name}</div>
-//       <div>Your Turn Now</div>
-//       <div>{/* <button onClick=""}>friendSHip</button> */}</div>
-//     </div>
-//   );
-// }
-
-// export default UserProfile;
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons"; // Import the desired icon
 
-function UserProfile({ playerA, friendShipToggle, friendShipStatus ,playerB}) {
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8000");
+
+function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB }) {
   const [sendRequestToggle, setSendRequestToggle] = useState(false);
   useEffect(() => {
     const playerBPresence = localStorage.getItem("playerB");
@@ -29,11 +16,15 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus ,playerB}) {
         setSendRequestToggle(true);
       }
     }
-  }, [playerA,friendShipToggle,friendShipStatus]);
+  }, [playerA, friendShipToggle, friendShipStatus]);
 
-  const sendRequestB = (playerA,playerB)=>{
+ 
 
-  }
+  const sendRequestB = () => {
+    const request = "userA"
+    socket.emit("sendRequest",{playerA,playerB,request})
+   
+  };
 
   return (
     <div className="h-screen flex flex-col gap-2 items-center">
@@ -44,7 +35,10 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus ,playerB}) {
           className="rounded-full w-32 h-32 border-4 border-blue-500"
         />
         {sendRequestToggle ? (
-          <button onClick={sendRequestB} className="absolute inset-0  text-blue-800 mb-20 ml-[120px] ">
+          <button
+            onClick={sendRequestB}
+            className="absolute inset-0  text-blue-800 mb-20 ml-[120px] "
+          >
             <FontAwesomeIcon icon={faUserPlus} className="text-2xl" />{" "}
           </button>
         ) : (

@@ -2,6 +2,10 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
+
+
+// Ensure the import is correct
+
 function Navbar() {
   const { user, handleLogout } = useContext(UserContext);
 
@@ -13,7 +17,7 @@ function Navbar() {
       });
       if (response.ok) {
         handleLogout(); // Update user state on successful logout
-        window.location.href = "http://localhost:3000" // Redirect to home page or login page
+        window.location.href = "http://localhost:3000"; // Redirect to home page or login page
       } else {
         throw new Error("Failed to logout");
       }
@@ -23,6 +27,7 @@ function Navbar() {
     }
   };
 
+
   return (
     <>
       <header className="flex flex-row justify-between px-20 h-[70px] header nav">
@@ -31,40 +36,42 @@ function Navbar() {
             TIKX
           </p>
           <div className="flex gap-1 flex-row mt-2 h-[50px] justify-between w-[400px]">
-            {user ? (
-              <>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/profile"
-                >
-                  Profile
-                </Link>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/history"
-                >
-                  History
-                </Link>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/friend"
-                >
-                  Play Game
-                </Link>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/online"
-                >
-                  Online
-                </Link>
-                <Link
-                  className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
-                  to="/chat"
-                >
-                  chat
-                </Link>
-              </>
-            ) : null /* Render nothing when user is not logged in */}
+            {
+              user ? (
+                <>
+                  <Link
+                    className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                    to="/profile"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                    to="/history"
+                  >
+                    History
+                  </Link>
+                  <Link
+                    className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                    to="/friend"
+                  >
+                    Play Game
+                  </Link>
+                  <Link
+                    className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                    to="/online"
+                  >
+                    Online
+                  </Link>
+                  <Link
+                    className="text-lg font-medium text-purple-600 dark:text-purple font-serif"
+                    to="/chat"
+                  >
+                    chat
+                  </Link>
+                </>
+              ) : null /* Render nothing when user is not logged in */
+            }
           </div>
         </div>
         {user ? (
