@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons"; // Import the desired icon
 
-function UserProfile({ playerA, friendShipToggle, friendShipStatus }) {
+function UserProfile({ playerA, friendShipToggle, friendShipStatus ,playerB}) {
   const [sendRequestToggle, setSendRequestToggle] = useState(false);
   useEffect(() => {
     const playerBPresence = localStorage.getItem("playerB");
@@ -31,6 +31,10 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus }) {
     }
   }, [playerA,friendShipToggle,friendShipStatus]);
 
+  const sendRequestB = (playerA,playerB)=>{
+
+  }
+
   return (
     <div className="h-screen flex flex-col gap-2 items-center">
       <div className="relative">
@@ -40,9 +44,8 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus }) {
           className="rounded-full w-32 h-32 border-4 border-blue-500"
         />
         {sendRequestToggle ? (
-          <button className="absolute inset-0  text-blue-800 mb-20 ml-[120px] ">
+          <button onClick={sendRequestB} className="absolute inset-0  text-blue-800 mb-20 ml-[120px] ">
             <FontAwesomeIcon icon={faUserPlus} className="text-2xl" />{" "}
-            {/* Icon added here */}
           </button>
         ) : (
           "none"
