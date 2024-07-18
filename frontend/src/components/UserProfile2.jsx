@@ -21,20 +21,20 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons"; // Import the de
 function UserProfile({ playerB, friendShipToggle, friendShipStatus }) {
   const [sendRequest, setSendRequest] = useState(false);
   useEffect(() => {
-    const playerBPresence = localStorage.getItem("playerB");
-    console.log({ friendShipToggle, friendShipStatus, playerBPresence });
-    if (friendShipToggle && playerBPresence) {
+    const playerAPresence = localStorage.getItem("playerA");
+    console.log({ friendShipToggle, friendShipStatus, playerAPresence });
+    if (friendShipToggle && playerAPresence) {
       console.log(friendShipStatus);
       if (friendShipStatus === "pending") {
         console.log("now in the toggle");
-        if (playerBPresence) {
+        if (playerAPresence) {
           console.log("player B presence");
-          console.log({playerBPresence});
+          console.log({ playerAPresence });
           setSendRequest(true);
         }
       }
     }
-  }, [friendShipStatus, friendShipToggle]);
+  }, [playerB, friendShipToggle, friendShipStatus]);
 
   return (
     <div className="h-screen flex flex-col gap-2 items-center">

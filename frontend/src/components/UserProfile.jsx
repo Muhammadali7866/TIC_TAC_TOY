@@ -22,12 +22,14 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons"; // Import the de
 function UserProfile({ playerA, friendShipToggle, friendShipStatus }) {
   const [sendRequestToggle, setSendRequestToggle] = useState(false);
   useEffect(() => {
-    const playerAPresence = localStorage.getItem("playerA");
-    console.log({ playerAPresence, friendShipStatus, friendShipToggle });
-    if (friendShipToggle && playerAPresence) {
-      setSendRequestToggle(true);
+    const playerBPresence = localStorage.getItem("playerB");
+    console.log({ playerBPresence, friendShipStatus, friendShipToggle });
+    if (friendShipToggle && playerBPresence) {
+      if (friendShipStatus === "pending") {
+        setSendRequestToggle(true);
+      }
     }
-  }, []);
+  }, [playerA,friendShipToggle,friendShipStatus]);
 
   return (
     <div className="h-screen flex flex-col gap-2 items-center">
