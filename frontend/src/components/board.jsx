@@ -239,9 +239,9 @@ function Board() {
   };
   useEffect(() => {
     socket.on("userAccept", (request) => {
-     if(request=="userA"){
-      
-     }
+      if (request === "userA" && localStorage.getItem("playerA")) {
+        notify();
+      }
     });
   }, []);
 

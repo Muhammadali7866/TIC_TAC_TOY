@@ -18,12 +18,9 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB }) {
     }
   }, [playerA, friendShipToggle, friendShipStatus]);
 
- 
-
   const sendRequestB = () => {
-    const request = "userA"
-    socket.emit("sendRequest",{playerA,playerB,request})
-   
+    const request = "userA";
+    socket.emit("sendRequest", { playerA, playerB, request });
   };
 
   return (
