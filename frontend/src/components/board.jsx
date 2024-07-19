@@ -238,11 +238,21 @@ function Board() {
     });
   };
   useEffect(() => {
-    socket.on("userAccept", (request) => {
+    const handleUserAccept = (request) => {
       if (request === "userA" && localStorage.getItem("playerA")) {
+        console.log("notifyuser");
         notify();
+      }else if (request==="userB"&& localStorage.getItem("playerB")){
+        notify()
       }
-    });
+    };
+  
+    socket.on("userAccept", handleUserAccept);
+  
+    // Cleanup function to remove the event listener
+    return () => {
+      socket.off("userAccept", handleUserAccept);
+    };
   }, []);
 
   return (
@@ -313,6 +323,7 @@ function Board() {
             {playerBShow && (
               <UserProfile2
                 playerB={playerB}
+                playerA={playerA}
                 friendShipToggle={friendShipToggle}
                 friendShipStatus={friendShipStatus}
               />
