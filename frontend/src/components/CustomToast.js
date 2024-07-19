@@ -2,10 +2,11 @@
 
 import React from "react";
 
-const CustomToast = ({ accept }) => (
+const CustomToast = ({ accept,user }) => (
   <div>
-    <p>User sent you a request</p>
+    <p>{user} sent you a request</p>
     <button onClick={accept}>Accept</button>
+    <button onClick={accept}>Decline</button>
   </div>
 );
 

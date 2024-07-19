@@ -36,6 +36,7 @@ function Board() {
   const [dummyState, setDummyState] = useState(false);
   const [friendShipStatus, setFriendShipStatus] = useState("");
   const [friendShipToggle, setFriendShipToggle] = useState(false);
+  const [friendShipStatusToggle, setFriendShipStatusToggle] = useState(false);
 
   const location = useLocation();
 
@@ -231,27 +232,43 @@ function Board() {
 
     fetchData();
   }, [playerBShow]);
-  const notify = () => {
-    toast(<CustomToast />, {
+  const notify = (accept, user) => {
+    toast(<CustomToast accept={accept} user={user} />, {
       position: "top-right",
       autoClose: 6000,
     });
   };
+
+  const accept = () => {
+    socket.emit("acceptRequest", { playerA, playerB });
+  };
   useEffect(() => {
-    const handleUserAccept = (request) => {
+    const handleUserAccept = (request, playerA, playerB) => {
       if (request === "userA" && localStorage.getItem("playerA")) {
         console.log("notifyuser");
-        notify();
-      }else if (request==="userB"&& localStorage.getItem("playerB")){
-        notify()
+        notify(accept, playerB.name);
+      } else if (request === "userB" && localStorage.getItem("playerB")) {
+        notify(accept, playerA.name);
       }
     };
-  
+
     socket.on("userAccept", handleUserAccept);
-  
+
     // Cleanup function to remove the event listener
     return () => {
       socket.off("userAccept", handleUserAccept);
+    };
+  }, []);
+
+  useEffect(() => {
+    const friendShipStatusUpdate = (status) => {
+      console.log(`friendShip status on web ${status}`);
+      setFriendShipStatus(status);
+      setFriendShipStatusToggle(true);
+    };
+    socket.on("friendShipAccepted", friendShipStatusUpdate);
+    return () => {
+      socket.off("friendShipAccepted", friendShipStatusUpdate);
     };
   }, []);
 
@@ -267,6 +284,7 @@ function Board() {
                 playerB={playerB}
                 friendShipToggle={friendShipToggle}
                 friendShipStatus={friendShipStatus}
+                friendShipStatusToggle={friendShipStatusToggle}
               />
             )}
           </div>
@@ -326,6 +344,8 @@ function Board() {
                 playerA={playerA}
                 friendShipToggle={friendShipToggle}
                 friendShipStatus={friendShipStatus}
+                friendShipStatusToggle={friendShipStatusToggle}
+
               />
             )}
           </div>

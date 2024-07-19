@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000");
 
-function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB }) {
+function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB,friendShipStatusToggle }) {
   const [sendRequestToggle, setSendRequestToggle] = useState(false);
   useEffect(() => {
     const playerBPresence = localStorage.getItem("playerB");
@@ -14,9 +14,11 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB }) {
     if (friendShipToggle && playerBPresence) {
       if (friendShipStatus === "pending") {
         setSendRequestToggle(true);
+      }else{
+        setSendRequestToggle(false)
       }
     }
-  }, [playerA, friendShipToggle, friendShipStatus]);
+  }, [playerA, friendShipToggle, friendShipStatus,friendShipStatusToggle]);
 
   const sendRequestB = () => {
     const request = "userA";

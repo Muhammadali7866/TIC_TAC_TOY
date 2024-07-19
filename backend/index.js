@@ -167,8 +167,42 @@ io.on("connection", (socket) => {
     // }
 
     // send back to other user
-    socket.broadcast.emit("userAccept",request)
+    socket.broadcast.emit("userAccept",request,playerA,playerB)
   });
+  socket.on("acceptRequest",async()=>{
+    console.log("user want to accept the request");
+      const friendship = await prisma.friendShip.findFirst({
+      where: {
+        OR: [
+          {
+            requesterId: 2,
+            requestedId: 1,
+          },
+          {
+            requesterId: 1,
+            requestedId: 2,
+          },
+        ],
+      },
+    });
+    // If a friendship record is found, update it
+    if (friendship) {
+      const updatedFriendship = await prisma.friendShip.update({
+        where: {
+          id: friendship.id,
+        },
+        data: {
+          status: "accept",
+        },
+      });
+
+      console.log("Friendship updated:", updatedFriendship);
+    } else {
+      console.log("No matching friendship found.");
+    }
+    let status = friendship.status;
+    socket.broadcast.emit("friendShipAccepted",status)
+  })
 });
 
 // Serve static files (if necessary)
