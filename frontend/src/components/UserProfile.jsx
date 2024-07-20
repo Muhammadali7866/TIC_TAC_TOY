@@ -24,6 +24,16 @@ function UserProfile({ playerA, friendShipToggle, friendShipStatus, playerB,frie
     const request = "userA";
     socket.emit("sendRequest", { playerA, playerB, request });
   };
+  useEffect(() => {
+    const friendShipStatusUpdate = (status) => {
+      console.log(`friendShip status on web ${status}`);
+      setSendRequestToggle(false)
+    };
+    socket.on("friendShipAccepted", friendShipStatusUpdate);
+    return () => {
+      socket.off("friendShipAccepted", friendShipStatusUpdate);
+    };
+  }, []);
 
   return (
     <div className="h-screen flex flex-col gap-2 items-center">

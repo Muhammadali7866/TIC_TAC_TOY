@@ -260,17 +260,17 @@ function Board() {
     };
   }, []);
 
-  useEffect(() => {
-    const friendShipStatusUpdate = (status) => {
-      console.log(`friendShip status on web ${status}`);
-      setFriendShipStatus(status);
-      setFriendShipStatusToggle(true);
-    };
-    socket.on("friendShipAccepted", friendShipStatusUpdate);
-    return () => {
-      socket.off("friendShipAccepted", friendShipStatusUpdate);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const friendShipStatusUpdate = (status) => {
+  //     console.log(`friendShip status on web ${status}`);
+  //     setFriendShipStatus(status);
+  //     setFriendShipStatusToggle(true);
+  //   };
+  //   socket.on("friendShipAccepted", friendShipStatusUpdate);
+  //   return () => {
+  //     socket.off("friendShipAccepted", friendShipStatusUpdate);
+  //   };
+  // }, []);
 
   return (
     <>
