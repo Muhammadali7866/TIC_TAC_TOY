@@ -71,3 +71,22 @@ export function checkFriendShipStatus(playerAId, playerBID) {
       });
   });
 }
+
+export function userFriends(userId) {
+  return new Promise((resolve, reject) => {
+    let config = {
+      method: "get",
+      url: `http://localhost:8000/api/v1/game/friends/${userId}`,
+    };
+    axios
+      .request(config)
+      .then((response) => {
+        if (response.data) {
+          resolve(response.data);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}

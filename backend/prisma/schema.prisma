@@ -73,6 +73,7 @@ model FriendShip {
   requestedId      Int?
   receivedRequests user?    @relation("receivedRequests", fields: [requestedId], references: [id])
   status           friendshipStatus?
+  roomId           Int?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
